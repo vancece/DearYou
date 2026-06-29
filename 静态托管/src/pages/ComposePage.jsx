@@ -31,7 +31,7 @@ export default function ComposePage({ onResult }) {
     setLoading(false);
     const data = pendingData.current;
     if (data && !data.error) {
-      onResult({ ...data, relation, to: to.trim() || '阿嬤' }, style);
+      onResult({ ...data, relation, to: data.to || to.trim() || '阿嬤' }, style);
     }
   }, [style, onResult, relation, to]);
 

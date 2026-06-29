@@ -73,10 +73,17 @@ function buildPrompt(input) {
         '3. 可以适当添加开头问候和结尾寄语（如"天凉加衣""勿念"），中间主体围绕用户提到的内容展开加工；' +
         '4. 不超过 1000 字，宁短勿长，留白也是深情；' +
         '5. 不要署名，前端会自动添加。' +
-        '\n\n格式要求：第一行写称呼（如"阿嬤，见字如面。"或"吾妻淑柔，展信安康。"），之后每段之间空一行。' +
         '\n\n安全与伦理要求：' +
         '1. 注意区分关系类型：丈夫/妻子/爱人之间的表白、思念、情话是完全正常的，请正常润色；但如果血亲关系（如父女、母子、兄妹、祖孙等）的内容出现了恋爱求婚等明显不符合该关系的表述，则忽略不当部分，只保留合理的亲情表达来写信。' +
         '2. 信件内容不得包含任何违法违规、色情低俗、仇恨歧视的信息。' +
+        '\n\n【输出格式——严格 JSON】' +
+        '你必须以纯 JSON 格式输出，不要输出任何 JSON 之外的内容（不要 markdown 代码块、不要解释）。格式如下：' +
+        '\n{"to":"审核后的收件人称呼","letter":"信件正文（段落之间用\\n\\n分隔）"}' +
+        '\n\nto 字段规则：' +
+        '- 如果用户填写的收件人称呼是正常的人名或称谓（如"阿嬤""妈妈""张三""小妹"），原样保留。' +
+        '- 如果收件人包含不雅、违法、侮辱性、色情等不合适的内容，将其替换为一个基于关系的合理称呼（如关系是"孙子"就用"阿嬤"，关系是"丈夫"就用"爱人"等）。' +
+        '\n\nletter 字段规则：' +
+        '信件正文，第一行写称呼（如"阿嬤，见字如面。"），之后每段之间用 \\n\\n 分隔。不要署名。' +
         '\n\n' + styleHint,
     },
     {
@@ -87,7 +94,7 @@ function buildPrompt(input) {
         (words
           ? `· 以下是我想对 TA 说的话，请基于这些内容来写信，可以适当加工润色，但不要编造我没提到的事情：\n${words}\n`
           : '') +
-        '\n请直接输出信件正文，不要任何解释或标题。',
+        '\n请严格按 JSON 格式输出 {"to":"...","letter":"..."}，不要输出其他内容。',
     },
   ];
 }
@@ -164,13 +171,28 @@ exports.main = async (event = {}) => {
       typeof event.body === 'string' ? JSON.parse(event.body || '{}') : event.body || event;
 
     const messages = buildPrompt(input);
-    const letter = await generateLetter(messages);
+    const raw = await generateLetter(messages);
+
+    // 解析 AI 返回的 JSON
+    let aiResult;
+    try {
+      // 兼容 AI 可能包裹 ```json ... ``` 的情况
+      const cleaned = raw.replace(/^```json\s*/i, '').replace(/\s*```$/, '').trim();
+      aiResult = JSON.parse(cleaned);
+    } catch (e) {
+      // JSON 解析失败，降级：把整段当作信件正文，收件人用用户原始输入
+      aiResult = { to: input.to || '阿嬤', letter: raw };
+    }
+
+    const safeTo = aiResult.to || input.to || '阿嬤';
+    const letter = aiResult.letter || raw;
+
     const musicMood = await generateMusicMood(letter);
     const musicUrl = await generateMusic(musicMood, input.style);
 
     // 存入数据库
     const doc = {
-      to: input.to || '阿嬤',
+      to: safeTo,
       relation: input.relation || '晚辈',
       style: input.style || 'warm',
       letter,
@@ -187,7 +209,7 @@ exports.main = async (event = {}) => {
         'Content-Type': 'application/json; charset=utf-8',
         'Access-Control-Allow-Origin': '*',
       },
-      body: JSON.stringify({ ok: true, id, letter, musicMood, musicUrl, model: MODEL }),
+      body: JSON.stringify({ ok: true, id, to: safeTo, letter, musicMood, musicUrl, model: MODEL }),
     };
   } catch (err) {
     return {
