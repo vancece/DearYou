@@ -37,6 +37,7 @@ AI 会自动：
 ## 功能
 
 - 填写称呼、关系、想说的话，AI 生成一封有温度的家书
+- AI 自动审核收件人称呼，过滤不雅 / 违规内容，保障安全
 - 三种风格可选：温情 / 幽默 / 正式
 - 毛笔楷书字体（马善政毛笔楷书）渲染信件
 - 打字机逐字呈现 + 背景音乐合成
@@ -71,7 +72,7 @@ AI 会自动：
 │   │   └── styles.css            # 全局样式
 │   └── vite.config.js            # Vite 配置（envDir 指向根目录）
 └── 云函数/
-    ├── loveletter/               # AI 生成信件 + 存数据库
+    ├── loveletter/               # AI 生成信件（JSON 结构化输出 + 收件人审核）+ 存数据库
     ├── getletter/                # 按 ID 读取信件
     ├── listletters/              # 分页获取公开信件列表
     ├── countletters/             # 统计公开信件数量
@@ -95,7 +96,7 @@ AI 会自动：
 
 | 字段 | 类型 | 说明 |
 |------|------|------|
-| `to` | string | 收信人称呼 |
+| `to` | string | 收信人称呼（AI 审核后的安全称呼） |
 | `relation` | string | 关系 |
 | `style` | string | 风格（warm/fun/formal） |
 | `letter` | string | 信件正文 |
