@@ -17,7 +17,7 @@
 .loading-overlay {
   position: fixed; inset: 0; z-index: 100;
   background: #1f1a12;
-  display: flex; justify-content: center;
+  display: flex; justify-content: center; align-items: center;
   min-height: 100%;
 }
 
@@ -66,11 +66,20 @@
   animation: fade-in .3s ease;
 }
 .modal-content {
+  position: relative;
   padding: 32px 40px; text-align: center;
   background: url("/assets/dropdown-bg.jpg") center/cover, #f4e7c9;
   border: 1.5px solid #9c7b4a; border-radius: 12px;
   box-shadow: 0 8px 32px rgba(60, 40, 20, .4);
 }
+.modal-close {
+  position: absolute; top: 10px; right: 14px;
+  background: none; border: none; cursor: pointer;
+  font-size: 18px; color: #6f5c40; line-height: 1;
+  padding: 4px 8px; border-radius: 4px;
+  transition: color .2s;
+}
+.modal-close:hover { color: #3a2d1d; }
 .modal-icon { font-size: 42px; margin-bottom: 12px; }
 .modal-text {
   font-family: "MaShanZheng", serif;

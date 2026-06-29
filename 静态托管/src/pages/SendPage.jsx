@@ -78,8 +78,9 @@ export default function SendPage({ data, onBack }) {
       )}
 
       {showModal && (
-        <div className="modal-mask">
-          <div className="modal-content">
+        <div className="modal-mask" onClick={() => setShowModal(false)}>
+          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+            <button className="modal-close" onClick={() => setShowModal(false)} aria-label="关闭">✕</button>
             <p className="modal-text">已投入公共树洞</p>
             <p className="modal-sub">这份温暖，将被更多人看到</p>
             <button className="modal-btn" onClick={() => navigate('/treehole')}>去看看</button>
