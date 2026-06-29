@@ -3,7 +3,36 @@
 一个用 AI 替你给最亲的人写信的小应用。灵感来自电影《给阿嬷的情书》——
 电影里谢南枝替人代笔写了一辈子，而这个应用，想做每个普通人的"谢南枝"。
 
-> 本项目由 **CodeBuddy** 接入**云开发自定义大模型 `hy3-preview`** 开发。
+> 本项目由 **[CodeBuddy](https://www.codebuddy.cn/)** 接入 **[云开发自定义大模型](https://docs.cloudbase.net/ai/ai-tools/codebuddy) `hy3-preview`** 开发。
+
+## 🚀 快速开始
+
+只需三步，即可将项目部署到云端：
+
+### 1. 用 CodeBuddy 打开本项目
+
+```
+用 CodeBuddy 打开项目文件夹「给阿嬷的情书」
+```
+
+### 2. 在集成面板登录 CloudBase
+
+点击 CodeBuddy 左侧的 **集成** 面板，找到 **CloudBase（云开发）**，完成登录并选择一个云开发环境。
+
+### 3. 对 AI 说一句话
+
+在 CodeBuddy 对话框中输入：
+
+> **请帮我部署这个项目**
+
+AI 会自动：
+- ✅ 检查 CloudBase 集成是否已登录
+- ✅ 确认你的环境 ID 和 Access Key（API Key）
+- ✅ 部署 5 个云函数到 CloudBase
+- ✅ 构建前端并上传到静态托管
+- ✅ 输出访问地址，打开即可使用
+
+> 💡 **需要准备**：CloudBase 环境 ID 和 Access Key（Publishable Key），可在 [CloudBase 控制台](https://tcb.cloud.tencent.com/) 获取。Access Key 同时用作 AI 大模型的 API Key。
 
 ## 功能
 
@@ -87,6 +116,16 @@ VITE_CLOUDBASE_ACCESS_KEY=你的Access Key（同时作为 AI API Key）
 
 > `VITE_` 前缀让 Vite 前端能读取，云函数本地调试也从同一个文件读。云端部署时通过环境变量 `CLOUDBASE_AI_API_KEY` 设置。
 
+## 云开发模型 × CodeBuddy
+
+本项目使用的 AI 大模型 `hy3-preview` 来自 [云开发 AI 控制台](https://tcb.cloud.tencent.com/dev#/ai?tab=text-aiModel)。你也可以将云开发模型接入 CodeBuddy 作为自定义大模型来编码：
+
+1. 在 [AI 控制台](https://tcb.cloud.tencent.com/dev#/ai?tab=text-aiModel) 启用目标模型，获取 **Base URL** 和 **API Key**
+2. 在 CodeBuddy 中点击「打开 Agents」→ 模型列表 →「配置自定义模型」
+3. 填入 Base URL、API Key 和模型名称，保存后即可使用
+
+> 📖 详细配置文档：[云开发模型接入 CodeBuddy](https://docs.cloudbase.net/ai/ai-tools/codebuddy)
+
 ## 本地开发
 
 ```bash
@@ -101,3 +140,5 @@ npm run dev
 2. 部署 5 个云函数（`loveletter` 需设 `CLOUDBASE_AI_API_KEY` 环境变量，超时 60s）
 3. 构建前端 `npm run build`
 4. 上传 `dist/` 到静态托管
+
+> 💡 或者直接用 CodeBuddy 对 AI 说「请帮我部署这个项目」，一键完成以上所有步骤。
