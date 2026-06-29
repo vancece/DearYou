@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect, useCallback } from 'react';
+import { useState, useRef, useEffect, useCallback } from 'react';
 import { RELATIONS, STYLES } from '../constants.js';
 import { cloudbase } from '../cloudbase.js';
 import LoadingOverlay from './LoadingOverlay.jsx';
@@ -55,7 +55,7 @@ export default function ComposePage({ onResult }) {
       return;
     }
     if (!to.trim()) { showToast('请填写阿嬤的称呼'); return; }
-    if (!relation) { showToast('请选择你们的关系'); return; }
+    if (!relation) { showToast('请选择你与收信人的关系'); return; }
     if (!words.trim()) { showToast('请写下想对阿嬤说的话'); return; }
 
     const payload = { to: to.trim(), relation, words: words.trim(), style };
@@ -98,7 +98,7 @@ export default function ComposePage({ onResult }) {
           ref={relWrapRef}
           onClick={(e) => { e.stopPropagation(); setMenuOpen((v) => !v); }}
         >
-          <span className="sel-text">{relation || '选择你们的关系'}</span>
+          <span className="sel-text">{relation || '我是 TA 的……'}</span>
         </div>
 
         {menuOpen && (

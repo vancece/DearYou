@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { HashRouter, Routes, Route, useNavigate } from 'react-router-dom';
 import HomePage from './pages/HomePage.jsx';
 import ComposePage from './pages/ComposePage.jsx';

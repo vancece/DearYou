@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from 'react';
+import { useEffect, useState, useRef } from 'react';
 
 const TIPS = ['执笔中', '斟酌字句', '落笔生情', '即将写好'];
 

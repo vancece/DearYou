@@ -1,4 +1,4 @@
-import React from 'react';
+
 
 const ENVELOPE_BGS = [
   '/assets/envelope-1.png',

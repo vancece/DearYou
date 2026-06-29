@@ -74,7 +74,9 @@ function buildPrompt(input) {
         '4. 不超过 1000 字，宁短勿长，留白也是深情；' +
         '5. 不要署名，前端会自动添加。' +
         '\n\n格式要求：第一行写称呼（如"阿嬤，见字如面。"或"吾妻淑柔，展信安康。"），之后每段之间空一行。' +
-        '\n\n安全要求：信件内容不得包含任何违法违规信息。' +
+        '\n\n安全与伦理要求：' +
+        '1. 注意区分关系类型：丈夫/妻子/爱人之间的表白、思念、情话是完全正常的，请正常润色；但如果血亲关系（如父女、母子、兄妹、祖孙等）的内容出现了恋爱求婚等明显不符合该关系的表述，则忽略不当部分，只保留合理的亲情表达来写信。' +
+        '2. 信件内容不得包含任何违法违规、色情低俗、仇恨歧视的信息。' +
         '\n\n' + styleHint,
     },
     {
@@ -147,15 +149,9 @@ async function generateMusicMood(letter) {
  * 这里给出接入位：返回 null 时前端会自动回退到本地合成的旋律，
  * 接通后返回真实音频 URL（mp3 / wav），前端直接播放。
  */
-async function generateMusic(musicMood, style) {
-  // TODO: 替换为云开发 AI 音乐生成接口。示意：
-  // const resp = await fetch(`${AI_BASE_URL}/music/generations`, {
-  //   method: 'POST',
-  //   headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${AI_API_KEY}` },
-  //   body: JSON.stringify({ prompt: musicMood, duration: 30, style }),
-  // });
-  // const data = await resp.json();
-  // return data.audio_url || null;
+async function generateMusic(/* musicMood, style */) {
+  // TODO: 替换为云开发 AI 音乐生成接口
+  // 参数 musicMood（情绪描述）和 style（风格）待接入时启用
   return null;
 }
 

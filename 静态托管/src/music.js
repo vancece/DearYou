@@ -34,6 +34,7 @@ let playing = false;
 
 function ensure() {
   if (!ctx) {
+    // @ts-ignore — Safari 旧版兼容
     ctx = new (window.AudioContext || window.webkitAudioContext)();
     master = ctx.createGain();
     master.gain.value = 0.7;

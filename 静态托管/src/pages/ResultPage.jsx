@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import * as MUSIC from '../music.js';
 import LetterView from '../components/LetterView.jsx';
 import InkButton from '../components/InkButton.jsx';
