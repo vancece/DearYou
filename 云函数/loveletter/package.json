@@ -3,5 +3,7 @@
   "version": "1.0.0",
   "description": "给阿嬤的情书 - 云函数后端，调用云开发自定义大模型 hy3-preview 生成情书与配乐文案",
   "main": "index.js",
-  "dependencies": {}
+  "dependencies": {
+    "@cloudbase/node-sdk": "^3.0.0"
+  }
 }

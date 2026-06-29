@@ -1,0 +1,9 @@
+{
+  "name": "getletter",
+  "version": "1.0.0",
+  "description": "根据 ID 读取信件内容",
+  "main": "index.js",
+  "dependencies": {
+    "@cloudbase/node-sdk": "^3.0.0"
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "name": "listletters",
+  "version": "1.0.0",
+  "description": "分页获取公共树洞信件列表",
+  "main": "index.js",
+  "dependencies": {
+    "@cloudbase/node-sdk": "^3.0.0"
+  }
+}

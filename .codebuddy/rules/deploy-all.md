@@ -8,8 +8,8 @@ alwaysApply: false
 ## 前置条件
 
 1. 已在 IDE 集成面板中登录 CloudBase 并选择环境
-2. `.env` 文件已配置 `VITE_CLOUDBASE_ENV_ID`、`VITE_CLOUDBASE_REGION`、`VITE_CLOUDBASE_ACCESS_KEY`
-3. 云函数环境变量 `CLOUDBASE_AI_API_KEY` 已设置
+2. 根目录 `.env` 已配置 `VITE_CLOUDBASE_ENV_ID`、`VITE_CLOUDBASE_REGION`、`VITE_CLOUDBASE_ACCESS_KEY`（同时作为 AI API Key）
+3. 部署 `loveletter` 云函数时，需将 Access Key 设为环境变量 `CLOUDBASE_AI_API_KEY`
 
 ## 完整流程
 
@@ -23,30 +23,32 @@ alwaysApply: false
 
 ### Phase 2: 云函数部署
 
+部署以下 5 个云函数（全部 Nodejs18.15, handler: index.main）：
+
+| 函数名 | 超时 | 环境变量 | 说明 |
+|--------|------|----------|------|
+| loveletter | 60s | CLOUDBASE_AI_API_KEY | AI 生成信件 + 存数据库 |
+| getletter | 10s | - | 按 ID 读取信件 |
+| listletters | 10s | - | 分页获取公开信件列表 |
+| countletters | 10s | - | 统计公开信件数量 |
+| publishletter | 10s | - | 修改信件公开状态 |
+
 ```
-1. 读取 云函数/loveletter/index.js 确认代码无误
-2. 调用 createFunction 部署云函数：
-   - name: loveletter
-   - runtime: Nodejs18.15
-   - timeout: 60
-   - handler: index.main
-   - envVariables: { CLOUDBASE_AI_API_KEY: <从.env或控制台获取> }
-   - force: true（覆盖已有）
-3. 调用 writeSecurityRule 确保 loveletter 函数可公开调用：
-   - resourceType: function
-   - resourceId: loveletter
-   - 在已有规则中追加 "loveletter": {"invoke": true}
-4. 调用 invokeFunction 测试云函数：
-   - name: loveletter
-   - params: { to: "阿嬤", relation: "孙子/孙女", words: "测试", style: "warm" }
-5. 确认返回 ok: true
+1. 逐个调用 createFunction 部署（force=true 覆盖已有）
+2. 调用 writeSecurityRule 确保所有函数可公开调用：
+   - "loveletter": {"invoke": true}
+   - "getletter": {"invoke": true}
+   - "listletters": {"invoke": true}
+   - "countletters": {"invoke": true}
+   - "publishletter": {"invoke": true}
+3. 调用 invokeFunction 测试 loveletter
 ```
 
 ### Phase 3: 前端构建
 
 ```
 1. cd 静态托管/
-2. npm install（如未安装依赖）
+2. npm install
 3. npm run build
 4. 确认 dist/ 目录生成成功
 ```
@@ -54,9 +56,7 @@ alwaysApply: false
 ### Phase 4: 静态托管部署
 
 ```
-1. 调用 uploadFiles 将 dist/ 上传到静态托管根目录：
-   - localPath: <绝对路径>/静态托管/dist
-   - cloudPath: /
+1. 调用 uploadFiles 将 dist/ 上传到静态托管根目录
 2. 等待上传完成
 ```
 
@@ -72,11 +72,7 @@ alwaysApply: false
 
 ```
 1. 拼接访问地址：https://<静态托管域名>/
-2. 输出完整的部署信息：
-   - 前端地址
-   - 云函数名称
-   - 环境 ID
-   - AI 模型
+2. 输出完整的部署信息
 3. 更新 README.md 中的部署信息
 ```
 
@@ -96,20 +92,21 @@ alwaysApply: false
 ## 注意事项
 
 - 云函数用的是 **Event 函数**（exports.main），前端通过 `@cloudbase/js-sdk` 的 `callFunction` 调用
-- 不要用 HTTP URL 直接调云函数，Event 函数不支持 HTTP 触发
-- 前端的 `.env` 不要提交到 git（已在 .gitignore 中排除）
-- 构建产物 `dist/` 不要提交到 git
-- 每次部署前先 `npm run build`，确保是最新代码
+- 前端路由使用 `HashRouter`，分享链接格式：`https://域名/#/read/:id`
+- `.env` 不要提交到 git（已在 .gitignore 中排除）
+- `dist/` 不要提交到 git
+- 云函数中不要硬编码环境 ID，通过 `process.env.TCB_ENV || process.env.SCF_NAMESPACE` 获取
 
-## 回滚
+## 数据库
 
-如需回滚云函数：
-```
-1. 保留旧版 index.js 备份
-2. 用 updateFunctionCode 重新上传旧版本
-```
+集合 `letters`（安全规则：READONLY）
 
-如需回滚前端：
-```
-1. 用旧的 dist/ 重新 uploadFiles
-```
+| 字段 | 说明 |
+|------|------|
+| to | 收信人称呼 |
+| relation | 关系 |
+| style | 风格 |
+| letter | 信件正文 |
+| musicMood | 配乐情绪 |
+| public | 是否公开到树洞 |
+| createdAt | 创建时间 |

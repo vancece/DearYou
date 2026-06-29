@@ -1,0 +1,9 @@
+{
+  "name": "publishletter",
+  "version": "1.0.0",
+  "description": "AI 审核信件并投递到公共树洞",
+  "main": "index.js",
+  "dependencies": {
+    "@cloudbase/node-sdk": "^3.0.0"
+  }
+}

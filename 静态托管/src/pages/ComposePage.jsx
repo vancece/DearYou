@@ -1,7 +1,6 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react';
-import { RELATIONS, STYLES, DEMO } from '../data.js';
+import { RELATIONS, STYLES } from '../data.js';
 import { cloudbase } from '../cloudbase.js';
-import * as MUSIC from '../music.js';
 import LoadingOverlay from './LoadingOverlay.jsx';
 
 export default function ComposePage({ onResult }) {
@@ -12,25 +11,13 @@ export default function ComposePage({ onResult }) {
   const [menuOpen, setMenuOpen] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  // 加载动画状态
   const [showLoading, setShowLoading] = useState(false);
   const [dataReady, setDataReady] = useState(false);
   const pendingData = useRef(null);
 
-  // 结果区（保留在本页展示，后续可由 onResult 切换到独立页面）
-  const [letter, setLetter] = useState('');
-  const [mood, setMood] = useState('');
-  const [showResult, setShowResult] = useState(false);
-  const [musicUrl, setMusicUrl] = useState(undefined);
-  const [musicOn, setMusicOn] = useState(false);
-
   const [toast, setToast] = useState('');
-
   const relWrapRef = useRef(null);
-  const resultRef = useRef(null);
-  const typingTimer = useRef(null);
 
-  // 点击空白关闭下拉
   useEffect(() => {
     const onDoc = (e) => {
       if (relWrapRef.current && !relWrapRef.current.contains(e.target)) setMenuOpen(false);
@@ -39,50 +26,16 @@ export default function ComposePage({ onResult }) {
     return () => document.removeEventListener('click', onDoc);
   }, []);
 
-  useEffect(() => () => { if (typingTimer.current) clearTimeout(typingTimer.current); }, []);
-
-  function typeWriter(text, done) {
-    let i = 0;
-    setLetter('');
-    const tick = () => {
-      if (i < text.length) {
-        setLetter((prev) => prev + text[i]);
-        i++;
-        typingTimer.current = setTimeout(tick, 26);
-      } else if (done) done();
-    };
-    tick();
-  }
-
-  function startPlayer(styleKey, url) {
-    MUSIC.start(styleKey, url);
-    setMusicOn(MUSIC.isPlaying());
-  }
-
-  function togglePlayer() {
-    MUSIC.toggle(style, musicUrl);
-    setMusicOn(MUSIC.isPlaying());
-  }
-
-  // 加载动画完成回调：用 pending 数据展示结果
   const handleLoadingComplete = useCallback(() => {
     setShowLoading(false);
-    setShowResult(true);
     setLoading(false);
-    setTimeout(() => resultRef.current?.scrollIntoView({ behavior: 'smooth' }), 50);
-
     const data = pendingData.current;
     if (data?.error) {
-      setLetter('信没能写成：' + data.error);
-      setMood('稍后再试一次吧。');
+      showToast('信没能写成：' + data.error);
     } else if (data) {
-      setMusicUrl(data.musicUrl);
-      typeWriter(data.letter, () => {
-        setMood('配乐情绪：' + (data.musicMood || data.mood));
-        startPlayer(style, data.musicUrl);
-      });
+      onResult({ ...data, relation, to: to.trim() || '阿嬤' }, style);
     }
-  }, [style]);
+  }, [style, onResult, relation, to]);
 
   function showToast(msg) {
     setToast(msg);
@@ -98,18 +51,8 @@ export default function ComposePage({ onResult }) {
     if (!relation) { showToast('请选择你们的关系'); return; }
     if (!words.trim()) { showToast('请写下想对阿嬤说的话'); return; }
 
-    const payload = {
-      to: to.trim(),
-      relation,
-      words: words.trim(),
-      style,
-    };
-    MUSIC.stop();
-    setMusicOn(false);
+    const payload = { to: to.trim(), relation, words: words.trim(), style };
     setLoading(true);
-    setShowResult(false);
-    setLetter('');
-    setMood('正在为这封信谱一段背景音乐');
     pendingData.current = null;
     setDataReady(false);
     setShowLoading(true);
@@ -159,7 +102,7 @@ export default function ComposePage({ onResult }) {
                 className={'opt' + (relation === r ? ' on' : '')}
                 onClick={() => { setRelation(r); setMenuOpen(false); }}
               >
-                {r.replace('/', ' / ')}
+                {r}
               </div>
             ))}
           </div>
@@ -197,8 +140,6 @@ export default function ComposePage({ onResult }) {
           <div className="toast">{toast}</div>
         </div>
       )}
-
-      {/* 结果区暂不展示，后续完善页面后再开启 */}
     </div>
   );
 }
