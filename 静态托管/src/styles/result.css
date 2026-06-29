@@ -1,0 +1,159 @@
+.result-card { overflow: hidden; }
+
+.letter-back-btn {
+  position: absolute; top: 1.5%; left: 7%; z-index: 10;
+  background: none; border: none; cursor: pointer; padding: 0;
+  transition: transform .2s ease, opacity .2s ease;
+}
+.letter-back-btn:hover {
+  transform: translateX(-3px); opacity: .7;
+}
+.letter-back-btn img {
+  width: 66px; height: auto; opacity: .85;
+}
+
+.read-btns {
+  position: absolute; bottom: 3%; left: 0; right: 0;
+  display: flex; justify-content: center; gap: 10px; z-index: 10;
+}
+.read-btns .ink-btn {
+  width: 40%; font-size: 13px; margin: 0;
+}
+
+/* 漂浮落叶 */
+.falling-leaves {
+  position: absolute; inset: 0; pointer-events: none; overflow: hidden; z-index: 2;
+}
+.leaf {
+  position: absolute; top: -20px;
+  width: 16px; height: 16px; opacity: .6;
+  animation: leaf-fall linear infinite;
+}
+.leaf-0 {
+  left: 10%; animation-duration: 10s; animation-delay: 0s;
+  background: radial-gradient(ellipse at 30% 40%, #c8a44e, #8b6914 70%, transparent 72%);
+  border-radius: 50% 2px 50% 2px; transform: rotate(15deg);
+  width: 14px; height: 10px;
+}
+.leaf-1 {
+  left: 35%; animation-duration: 13s; animation-delay: 2s;
+  background: radial-gradient(ellipse at 40% 30%, #6b8c42, #3d5a1e 70%, transparent 72%);
+  border-radius: 2px 50% 2px 50%; transform: rotate(-20deg);
+  width: 18px; height: 6px;
+}
+.leaf-2 {
+  left: 60%; animation-duration: 11s; animation-delay: 4s;
+  background: radial-gradient(ellipse at 30% 40%, #d4a534, #9c7b1a 70%, transparent 72%);
+  border-radius: 50% 2px 50% 2px; transform: rotate(35deg);
+  width: 12px; height: 9px;
+}
+.leaf-3 {
+  left: 82%; animation-duration: 14s; animation-delay: 1s;
+  background: radial-gradient(ellipse at 40% 30%, #5a7a3a, #2d4a12 70%, transparent 72%);
+  border-radius: 2px 50% 2px 50%; transform: rotate(-10deg);
+  width: 16px; height: 5px;
+}
+.leaf:nth-child(5) { left: 22%; animation-duration: 12s; animation-delay: 5s; }
+.leaf:nth-child(6) { left: 48%; animation-duration: 9s; animation-delay: 3s; }
+.leaf:nth-child(7) { left: 72%; animation-duration: 15s; animation-delay: 6s; }
+.leaf:nth-child(8) { left: 90%; animation-duration: 11s; animation-delay: 7s; }
+
+@keyframes leaf-fall {
+  0% { top: -5%; opacity: 0; transform: rotate(0deg) translateX(0); }
+  10% { opacity: .3; }
+  50% { transform: rotate(180deg) translateX(20px); opacity: .25; }
+  80% { opacity: .2; }
+  100% { top: 95%; opacity: 0; transform: rotate(360deg) translateX(-10px); }
+}
+
+.result-content {
+  position: absolute; top: 11%; left: 12%; right: 15%; bottom: 26%;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+.result-content::-webkit-scrollbar { display: none; }
+.result-title {
+  font-family: "MaShanZheng", serif;
+  font-size: 20px; font-weight: normal; color: #3a2d1d;
+  margin-bottom: 16px; letter-spacing: .08em;
+}
+.result-letter {
+  flex: 1;
+  font-family: "MaShanZheng", serif;
+  font-size: 16px; line-height: 2.2; color: #3a2d1d;
+  white-space: pre-wrap; letter-spacing: .04em;
+}
+.result-signature {
+  position: absolute; bottom: 19.5%; right: 24%;
+  font-family: "MaShanZheng", serif;
+  text-align: right;
+}
+.signature-name {
+  font-size: 15px; color: #3a2d1d; letter-spacing: .05em;
+}
+.signature-date {
+  font-size: 13px; color: #6f5c40; margin-top: 24px;
+}
+.cursor-blink { animation: blink 1s steps(2) infinite; }
+@keyframes blink { 0% { opacity: 1; } 100% { opacity: 0; } }
+
+.result-mood {
+  position: absolute; left: 12%; right: 12%; bottom: 8%;
+  display: flex; align-items: center; gap: 8px;
+  font-size: 12px; color: #6f5c40; opacity: .8;
+}
+.result-mood .note { font-size: 15px; color: #9e3b2c; }
+
+.result-actions {
+  display: flex; gap: 12px; justify-content: center;
+  padding: 20px 0 36px;
+}
+.action-btn {
+  padding: 10px 22px; border-radius: 8px; border: 1.5px solid #9c7b4a;
+  background: url("/assets/dropdown-bg.jpg") center/cover, #f4e7c9;
+  font-family: inherit; font-size: 14px; color: #3a2d1d;
+  cursor: pointer; letter-spacing: .05em;
+  transition: transform .12s, box-shadow .2s;
+}
+.action-btn:active { transform: scale(.96); }
+.music-btn { }
+.back-btn { background: rgba(158, 59, 44, .12); border-color: #9e3b2c; color: #9e3b2c; }
+
+/* 旧结果区（保留兼容） */
+.music {
+  display: flex; align-items: center; gap: 10px; margin-top: 14px;
+  padding: 11px 14px; background: rgba(158, 59, 44, .1);
+  border: 1px dashed rgba(120, 92, 52, .4); border-radius: 6px;
+  font-size: 13.5px; color: #6f5c40;
+}
+.music .note { font-size: 17px; color: #9e3b2c; }
+.dots::after { animation: dots 1.4s infinite steps(4, end); content: ""; }
+@keyframes dots { 0%{content:"";} 25%{content:"·";} 50%{content:"··";} 75%{content:"···";} 100%{content:"";} }
+
+.player {
+  display: flex; align-items: center; gap: 12px; margin-top: 12px;
+  padding: 11px 14px; border-radius: 8px;
+  background: rgba(158, 59, 44, .1); border: 1px solid rgba(120, 92, 52, .4);
+}
+.play-btn {
+  flex: none; width: 42px; height: 42px; border-radius: 50%;
+  border: 1.5px solid #9e3b2c; background: rgba(246, 236, 214, .6);
+  color: #9e3b2c; cursor: pointer; font-size: 15px;
+  display: flex; align-items: center; justify-content: center;
+  transition: background .2s, transform .12s;
+}
+.play-btn:active { transform: scale(.92); }
+.play-btn.playing { background: #9e3b2c; color: #f5e6c8; }
+.wave { flex: 1; display: flex; align-items: flex-end; gap: 3px; height: 30px; }
+.wave i { flex: 1; background: #9e3b2c; border-radius: 2px; opacity: .4; height: 35%; transform-origin: center bottom; }
+.wave.playing i { animation: wv 1s ease-in-out infinite; opacity: .8; }
+.wave.playing i:nth-child(2n) { animation-duration: .8s; }
+.wave.playing i:nth-child(3n) { animation-duration: 1.25s; }
+.wave.playing i:nth-child(4n) { animation-duration: .62s; }
+@keyframes wv { 0%,100%{ transform: scaleY(.35);} 50%{ transform: scaleY(1);} }
+
+.result-send-btn {
+  position: absolute; bottom: 2%; left: 50%; transform: translateX(-50%);
+  z-index: 10;
+}

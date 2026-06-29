@@ -1,0 +1,27 @@
+.treehole-card { overflow: hidden; }
+
+.treehole-count {
+  position: absolute; top: 16%; left: 0; right: 0;
+  text-align: center; pointer-events: none;
+  font-size: 11px; color: #6f5c40; letter-spacing: .05em;
+}
+
+.treehole-back-btn {
+  position: absolute; top: 9%; left: 3%; width: 20%; height: 5%;
+  background: transparent; border: none; cursor: pointer; z-index: 5;
+}
+
+.treehole-list {
+  position: absolute; top: 18%; left: 6%; right: 6%; bottom: 5%;
+  overflow-y: auto; -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  display: flex; flex-direction: column; gap: 14px;
+  padding: 4px 0;
+  scroll-snap-type: y mandatory;
+}
+.treehole-list::-webkit-scrollbar { display: none; }
+
+.treehole-loading, .treehole-end {
+  text-align: center; font-size: 12px; color: rgba(111, 92, 64, .6);
+  padding: 12px 0; letter-spacing: .05em;
+}

@@ -1,0 +1,72 @@
+/* 单行控件以中心定位，避免基线漂移 */
+.ov-to {
+  left: 15%; width: 64%; top: 33.4%; transform: translateY(-50%);
+  height: 30px; font-size: 15px; line-height: 30px;
+}
+
+/* 与阿嬤的关系：背景图右侧自带 ▼ 箭头 */
+.ov-rel {
+  left: 22%; width: 56%; top: 43.9%; transform: translateY(-50%);
+  height: 40px; cursor: pointer; display: flex; align-items: center;
+}
+.ov-rel .sel-text {
+  flex: 1; font-size: 15px; color: #8a7350; white-space: nowrap;
+  overflow: hidden; text-overflow: ellipsis; letter-spacing: .03em; line-height: 30px;
+}
+.ov-rel.chosen .sel-text { color: #3a2d1d; }
+
+.sel-menu {
+  position: absolute; left: 16%; top: 46.8%; width: 52%; z-index: 20;
+  max-height: 230px; overflow-y: auto;
+  -webkit-overflow-scrolling: touch; scroll-behavior: smooth;
+  scrollbar-width: none;
+  background: url("/assets/dropdown-bg.jpg") center/cover, #f4e7c9;
+  border: 1.5px solid #9c7b4a; border-radius: 10px;
+  box-shadow: 0 6px 16px rgba(60, 40, 20, .28), 0 16px 40px rgba(60, 40, 20, .32), 0 2px 4px rgba(60, 40, 20, .25);
+}
+.sel-menu .opt {
+  padding: 13px 18px; font-size: 15px; color: #5a4528; cursor: pointer;
+  border-bottom: 1px solid rgba(156, 123, 74, .3); letter-spacing: .03em;
+  transition: background .15s, color .15s;
+}
+.sel-menu::-webkit-scrollbar { display: none; }
+.sel-menu .opt:last-child { border-bottom: none; }
+.sel-menu .opt:hover, .sel-menu .opt.on { background: rgba(158, 59, 44, .9); color: #f6ecd6; }
+
+/* 想对阿嬤说的话（多行） */
+.ov-words { left: 14%; top: 53%; width: 70%; height: 14.5%; font-size: 15px; resize: none; }
+.ov-count { position: absolute; right: 16%; top: 67.5%; font-size: 11px; color: rgba(120, 98, 64, .7); }
+
+/* 风格选择：三个透明圆形热区，精确盖在背景三枚印章上 */
+.ov-styles { left: 8%; top: 74%; width: 84%; height: 8.5%; display: flex; align-items: center; }
+.ov-styles .hot {
+  flex: 1; height: 100%; cursor: pointer; position: relative;
+  display: flex; align-items: center; justify-content: center;
+  transition: transform .18s ease;
+}
+.ov-styles .hot::before {
+  content: ""; width: 58px; height: 58px; border-radius: 50%;
+  transition: box-shadow .2s, transform .12s;
+}
+.ov-styles .hot:active { transform: scale(.94); }
+/* 选中态：在印章右下角盖一枚水彩对勾 */
+.ov-styles .hot::after {
+  content: ""; position: absolute; top: 50%; left: 50%;
+  width: 46px; height: 49px;
+  background: url("/assets/check.png") center/contain no-repeat;
+  opacity: 0; transform: translate(8%, 18%) scale(.4) rotate(-8deg);
+  transition: opacity .22s, transform .28s cubic-bezier(.34,1.56,.64,1);
+  pointer-events: none;
+}
+.ov-styles .hot.active::after { opacity: 1; transform: translate(8%, 18%) scale(1) rotate(-8deg); }
+
+/* 提交按钮：直接用设计稿按钮图，透明无文字 */
+.submit {
+  display: block; width: 62%; margin: -95px auto 0; position: relative; z-index: 5;
+  aspect-ratio: 500 / 130;
+  background: url("/assets/btn.png") center/contain no-repeat;
+  border: none; cursor: pointer; font-size: 0; color: transparent;
+  transition: transform .12s, opacity .2s, filter .2s;
+}
+.submit:active { transform: translateY(2px) scale(.99); }
+.submit:disabled { opacity: .55; filter: grayscale(.3); }

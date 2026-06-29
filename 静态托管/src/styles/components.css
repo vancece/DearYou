@@ -1,0 +1,192 @@
+/* 公共按钮 */
+.ink-btn {
+  display: flex; align-items: center; justify-content: center;
+  width: 55%; max-width: 260px;
+  aspect-ratio: 300 / 88;
+  background: url("/assets/btn-send.png") center/contain no-repeat;
+  border: none; cursor: pointer;
+  font-family: inherit; font-size: 15px; color: rgba(244, 231, 201, .85);
+  letter-spacing: .1em;
+  text-shadow: 0 1px 2px rgba(0,0,0,.2);
+  transition: opacity .2s;
+  opacity: .85;
+}
+.ink-btn:disabled { opacity: .5; cursor: not-allowed; }
+
+/* 加载动画 */
+.loading-overlay {
+  position: fixed; inset: 0; z-index: 100;
+  background: #1f1a12;
+  display: flex; justify-content: center;
+  min-height: 100%;
+}
+
+.loading-stage { display: flex; flex-direction: column; }
+
+.loading-layer {
+  position: absolute; top: 0; left: 0;
+}
+
+.loading-footer {
+  position: absolute; left: 0; right: 0; bottom: 12%;
+  display: flex; flex-direction: column; align-items: center;
+  gap: 12px; pointer-events: none;
+}
+
+.loading-progress {
+  display: flex; align-items: center; gap: 28px;
+}
+.loading-progress::before,
+.loading-progress::after {
+  content: ""; width: 24px; height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(58, 45, 29, .3), transparent);
+}
+.loading-dot {
+  width: 10px; height: 10px;
+  border-radius: 50% 45% 50% 42%;
+  background: rgba(58, 45, 29, .2);
+  transition: background .6s ease, transform .6s ease, box-shadow .6s ease;
+  box-shadow: 0 0 6px rgba(246, 236, 214, .4);
+}
+.loading-dot.active {
+  background: rgba(58, 45, 29, .55);
+  box-shadow: 0 0 8px rgba(58, 45, 29, .15), 0 0 4px rgba(246, 236, 214, .3);
+}
+.loading-dot.current {
+  background: #3a2d1d;
+  transform: scale(1.4);
+  box-shadow: 0 1px 8px rgba(58, 45, 29, .35), 0 0 12px rgba(58, 45, 29, .1);
+}
+
+/* 投递成功 Modal */
+.modal-mask {
+  position: fixed; inset: 0; z-index: 300;
+  background: rgba(31, 26, 18, .6);
+  display: flex; align-items: center; justify-content: center;
+  animation: fade-in .3s ease;
+}
+.modal-content {
+  padding: 32px 40px; text-align: center;
+  background: url("/assets/dropdown-bg.jpg") center/cover, #f4e7c9;
+  border: 1.5px solid #9c7b4a; border-radius: 12px;
+  box-shadow: 0 8px 32px rgba(60, 40, 20, .4);
+}
+.modal-icon { font-size: 42px; margin-bottom: 12px; }
+.modal-text {
+  font-family: "MaShanZheng", serif;
+  font-size: 20px; color: #3a2d1d; letter-spacing: .08em;
+}
+.modal-sub {
+  font-size: 13px; color: #6f5c40; margin-top: 8px;
+}
+.modal-btn {
+  margin-top: 20px; padding: 10px 32px;
+  border: 1.5px solid #9c7b4a; border-radius: 8px;
+  background: rgba(158, 59, 44, .1); color: #9e3b2c;
+  font-family: inherit; font-size: 15px; letter-spacing: .08em;
+  cursor: pointer;
+}
+@keyframes fade-in { from { opacity: 0; } to { opacity: 1; } }
+
+/* 弹窗提示 */
+.toast-mask {
+  position: fixed; inset: 0; z-index: 200;
+  display: flex; align-items: center; justify-content: center;
+  pointer-events: none;
+}
+.toast {
+  padding: 16px 28px;
+  background: url("/assets/dropdown-bg.jpg") center/cover, #f4e7c9;
+  border: 1.5px solid #9c7b4a; border-radius: 10px;
+  box-shadow: 0 6px 16px rgba(60, 40, 20, .28), 0 16px 40px rgba(60, 40, 20, .32);
+  font-size: 15px; color: #3a2d1d; letter-spacing: .05em;
+  animation: toast-in .3s ease;
+}
+@keyframes toast-in {
+  from { opacity: 0; transform: scale(.88); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+/* 信封组件 */
+@keyframes cardSlideIn { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+.envelope {
+  position: relative; cursor: pointer;
+  transition: transform .15s;
+  animation: cardSlideIn .35s ease both;
+  scroll-snap-align: end;
+  scroll-snap-stop: always;
+}
+.envelope:hover { transform: scale(1.02); }
+.envelope:active { transform: scale(.98); }
+
+.envelope-bg {
+  display: block; width: 100%; height: auto;
+  border-radius: 4px;
+}
+
+.envelope-content {
+  position: absolute; inset: 0;
+}
+
+/* 信封1：竹叶火漆封 */
+.env-1 .env-title {
+  position: absolute; top: 35%; left: 20%; right: 10%;
+  font-family: "MaShanZheng", serif;
+  font-size: 20px; color: #3a2d1d; letter-spacing: .05em;
+}
+.env-1 .env-preview {
+  position: absolute; top: 50%; left: 20%; right: 30%;
+  font-size: 11px; color: #5a4528; line-height: 1.6;
+  overflow: hidden; white-space: nowrap; text-overflow: ellipsis;
+}
+.env-1 .env-from {
+  position: absolute; bottom: 18%; left: 20%;
+  font-size: 11px; color: #1a1a1a;
+}
+.env-1 .env-date {
+  position: absolute; bottom: 18%; right: 30%;
+  font-size: 10px; color: #1a1a1a;
+}
+
+/* 信封2：邮戳封 */
+.env-2 .envelope-content {
+  transform: rotate(-2deg); transform-origin: center center;
+}
+.env-2 .env-title {
+  position: absolute; top: 30%; left: 16%; right: 30%;
+  font-family: "MaShanZheng", serif;
+  font-size: 20px; color: #3a2d1d; letter-spacing: .05em;
+}
+.env-2 .env-preview {
+  position: absolute; top: 50%; left: 16%; right: 12%;
+  font-size: 11px; color: #5a4528; line-height: 1.6;
+  overflow: hidden; white-space: nowrap; text-overflow: ellipsis;
+}
+.env-2 .env-from {
+  position: absolute; bottom: 20%; left: 16%;
+  font-size: 11px; color: #1a1a1a;
+}
+.env-2 .env-date {
+  position: absolute; bottom: 20%; right: 12%;
+  font-size: 10px; color: #1a1a1a;
+}
+
+/* 信封3：树洞邮戳封 */
+.env-3 .env-title {
+  position: absolute; top: 30%; left: 17%; right: 30%;
+  font-family: "MaShanZheng", serif;
+  font-size: 20px; color: #3a2d1d; letter-spacing: .05em;
+}
+.env-3 .env-preview {
+  position: absolute; top: 45%; left: 17%; right: 12%;
+  font-size: 11px; color: #5a4528; line-height: 1.6;
+  overflow: hidden; white-space: nowrap; text-overflow: ellipsis;
+}
+.env-3 .env-from {
+  position: absolute; bottom: 17%; left: 12%;
+  font-size: 11px; color: #1a1a1a;
+}
+.env-3 .env-date {
+  position: absolute; bottom: 17%; right: 12%;
+  font-size: 10px; color: #1a1a1a;
+}

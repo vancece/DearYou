@@ -1,0 +1,18 @@
+.home-card { overflow: hidden; }
+.home-write-btn {
+  position: absolute; top: 62%; left: 12%; right: 12%; height: 10%;
+  background: transparent; border: none; cursor: pointer;
+}
+.home-treehole-btn {
+  position: absolute; top: 74%; left: 10%; right: 10%; height: 8%;
+  background: transparent; border: none; cursor: pointer;
+}
+.home-count {
+  position: absolute; top: 77.7%; left: 56%;
+  font-size: 12px; color: #8a3d22; letter-spacing: .03em;
+  pointer-events: none;
+}
+.home-bottom-btn {
+  position: absolute; bottom: 4%; left: 10%; right: 10%; height: 6%;
+  background: transparent; border: none; cursor: pointer;
+}

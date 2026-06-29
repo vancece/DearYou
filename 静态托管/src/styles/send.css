@@ -1,0 +1,36 @@
+.send-card { overflow: hidden; }
+
+/* 链接输入框 */
+.send-url-input {
+  position: absolute; top: 39.5%; left: 26%; width: 45%; height: 4%;
+  border: none; outline: none; background: transparent;
+  font-family: inherit; font-size: 26px; color: #3a2d1d;
+  letter-spacing: .01em; padding: 0 6px;
+  text-overflow: ellipsis; overflow: hidden; white-space: nowrap;
+}
+
+/* 复制按钮：红色印章热区 */
+.send-copy-btn {
+  position: absolute; top: 38%; right: 11%; width: 13%; height: 8%;
+  background: transparent; border: none; cursor: pointer;
+}
+
+/* 投入树洞：整张卡片热区 */
+.send-treehole-btn {
+  position: absolute; top: 53%; left: 5%; right: 5%; height: 17%;
+  background: transparent; border: none; cursor: pointer;
+}
+.send-treehole-btn:disabled { cursor: default; opacity: .6; }
+
+/* 查看树洞：整张卡片热区 */
+.send-view-btn {
+  position: absolute; top: 70%; left: 5%; right: 5%; height: 14%;
+  background: transparent; border: none; cursor: pointer;
+}
+
+/* 完成按钮：底部火漆印章 */
+.send-done-btn {
+  position: absolute; bottom: 3%; left: 50%; transform: translateX(-50%);
+  width: 25%; height: 12%;
+  background: transparent; border: none; cursor: pointer;
+}

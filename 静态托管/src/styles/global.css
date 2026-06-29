@@ -1,0 +1,22 @@
+* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+html, body { height: 100%; }
+body {
+  font-family: "Songti SC", "STSong", "SimSun", "Noto Serif SC", serif;
+  background: #000;
+  color: #3a2d1d;
+  display: flex; justify-content: center; align-items: center; min-height: 100%;
+}
+
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+.stage { width: 100%; max-width: 420px; animation: fadeIn .4s ease both; }
+
+/* 背景设计稿 + 叠加层容器 */
+.card { position: relative; width: 100%; line-height: 0; }
+.card .bg { display: block; width: 100%; height: auto; }
+
+/* 透明叠加控件通用 */
+.ov {
+  position: absolute; background: transparent; border: none; outline: none;
+  font-family: inherit; color: #3a2d1d; line-height: 1.7; box-sizing: border-box;
+}
+.ov::placeholder { color: #8a7350; opacity: 1; }

@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react';
-import { RELATIONS, STYLES } from '../data.js';
+import { RELATIONS, STYLES } from '../constants.js';
 import { cloudbase } from '../cloudbase.js';
 import LoadingOverlay from './LoadingOverlay.jsx';
 
