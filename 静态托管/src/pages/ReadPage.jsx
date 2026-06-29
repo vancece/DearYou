@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import React, { useState, useEffect, useRef } from 'react';
+import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import { cloudbase } from '../cloudbase.js';
 import LetterView from '../components/LetterView.jsx';
 import InkButton from '../components/InkButton.jsx';
@@ -7,6 +7,8 @@ import InkButton from '../components/InkButton.jsx';
 export default function ReadPage() {
   const { id: letterId } = useParams();
   const nav = useNavigate();
+  const location = useLocation();
+  const hasHistory = useRef(location.key !== 'default');
   const [data, setData] = useState(null);
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(true);
@@ -67,7 +69,7 @@ export default function ReadPage() {
         relation={data.relation}
         date={data.createdAt ? new Date(data.createdAt).toLocaleDateString('zh-CN', { year: 'numeric', month: 'long', day: 'numeric' }) : undefined}
         typing={true}
-        onBack={() => nav(-1)}
+        onBack={() => hasHistory.current ? nav(-1) : nav('/')}
       >
         <div className="read-btns">
           <InkButton onClick={() => nav('/')}>我也写一封</InkButton>
