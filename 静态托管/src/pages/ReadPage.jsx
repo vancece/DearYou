@@ -16,7 +16,9 @@ export default function ReadPage() {
 
   function handleShare() {
     const url = window.location.href;
-    navigator.clipboard.writeText(url).then(() => {
+    const to = data?.to || '你';
+    const text = `这是一封写给${to}的信，愿这份温暖也传递给你 💌\n${url}`;
+    navigator.clipboard.writeText(text).then(() => {
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
     }).catch(() => {});

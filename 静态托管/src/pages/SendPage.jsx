@@ -16,7 +16,8 @@ export default function SendPage({ data, onBack }) {
 
   function handleCopy() {
     if (!shareUrl) return;
-    navigator.clipboard.writeText(shareUrl).then(() => {
+    const text = `这是我给${data?.to || '你'}写的一封信，点开看看吧 💌\n${shareUrl}`;
+    navigator.clipboard.writeText(text).then(() => {
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
     }).catch(() => {});
