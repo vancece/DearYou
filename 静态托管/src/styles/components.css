@@ -23,39 +23,50 @@
 
 .loading-stage { display: flex; flex-direction: column; }
 
-.loading-layer {
-  position: absolute; top: 0; left: 0;
+/* 背景图缓慢呼吸放大 */
+.loading-breathe {
+  animation: breathe 6s ease-in-out infinite;
+}
+@keyframes breathe {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.04); }
 }
 
+/* 底部提示区 */
 .loading-footer {
   position: absolute; left: 0; right: 0; bottom: 12%;
   display: flex; flex-direction: column; align-items: center;
-  gap: 12px; pointer-events: none;
+  gap: 14px; pointer-events: none;
 }
 
-.loading-progress {
-  display: flex; align-items: center; gap: 28px;
+/* 文字提示 — 淡入淡出 */
+.loading-tip {
+  font-family: "MaShanZheng", serif;
+  font-size: 16px; color: rgba(58, 45, 29, .7);
+  letter-spacing: .12em;
+  animation: tip-fade 2.8s ease infinite;
 }
-.loading-progress::before,
-.loading-progress::after {
-  content: ""; width: 24px; height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(58, 45, 29, .3), transparent);
+@keyframes tip-fade {
+  0% { opacity: 0; transform: translateY(4px); }
+  15% { opacity: 1; transform: translateY(0); }
+  85% { opacity: 1; transform: translateY(0); }
+  100% { opacity: 0; transform: translateY(-4px); }
 }
-.loading-dot {
-  width: 10px; height: 10px;
-  border-radius: 50% 45% 50% 42%;
+
+/* 墨点指示器 */
+.loading-dots {
+  display: flex; align-items: center; gap: 10px;
+}
+.loading-ink-dot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
   background: rgba(58, 45, 29, .2);
-  transition: background .6s ease, transform .6s ease, box-shadow .6s ease;
-  box-shadow: 0 0 6px rgba(246, 236, 214, .4);
+  transition: all .3s ease;
 }
-.loading-dot.active {
-  background: rgba(58, 45, 29, .55);
-  box-shadow: 0 0 8px rgba(58, 45, 29, .15), 0 0 4px rgba(246, 236, 214, .3);
-}
-.loading-dot.current {
-  background: #3a2d1d;
-  transform: scale(1.4);
-  box-shadow: 0 1px 8px rgba(58, 45, 29, .35), 0 0 12px rgba(58, 45, 29, .1);
+.loading-ink-dot.active {
+  background: rgba(58, 45, 29, .65);
+  transform: scale(1.5);
+  box-shadow: 0 0 6px rgba(58, 45, 29, .25);
 }
 
 /* 投递成功 Modal */
@@ -67,7 +78,8 @@
 }
 .modal-content {
   position: relative;
-  padding: 32px 40px; text-align: center;
+  width: 82%; max-width: 320px;
+  padding: 24px 20px; text-align: center;
   background: url("/assets/dropdown-bg.jpg") center/cover, #f4e7c9;
   border: 1.5px solid #9c7b4a; border-radius: 12px;
   box-shadow: 0 8px 32px rgba(60, 40, 20, .4);
@@ -80,16 +92,17 @@
   transition: color .2s;
 }
 .modal-close:hover { color: #3a2d1d; }
-.modal-icon { font-size: 42px; margin-bottom: 12px; }
+.modal-icon { font-size: 36px; margin-bottom: 8px; }
 .modal-text {
   font-family: "MaShanZheng", serif;
-  font-size: 20px; color: #3a2d1d; letter-spacing: .08em;
+  font-size: 18px; color: #3a2d1d; letter-spacing: .08em;
 }
 .modal-sub {
-  font-size: 13px; color: #6f5c40; margin-top: 8px;
+  font-size: 12px; color: #6f5c40; margin-top: 6px;
+  word-break: break-all;
 }
 .modal-btn {
-  margin-top: 20px; padding: 10px 32px;
+  margin-top: 16px; padding: 8px 24px;
   border: 1.5px solid #9c7b4a; border-radius: 8px;
   background: rgba(158, 59, 44, .1); color: #9e3b2c;
   font-family: inherit; font-size: 15px; letter-spacing: .08em;

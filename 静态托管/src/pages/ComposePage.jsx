@@ -30,12 +30,19 @@ export default function ComposePage({ onResult }) {
     setShowLoading(false);
     setLoading(false);
     const data = pendingData.current;
-    if (data?.error) {
-      showToast('信没能写成：' + data.error);
-    } else if (data) {
+    if (data && !data.error) {
       onResult({ ...data, relation, to: to.trim() || '阿嬤' }, style);
     }
   }, [style, onResult, relation, to]);
+
+  const handleRetry = useCallback(() => {
+    setShowLoading(false);
+    setLoading(false);
+    pendingData.current = null;
+    setDataReady(false);
+    // 延迟一帧再重新提交，让 UI 先恢复
+    setTimeout(() => handleSubmit(), 50);
+  }, []);
 
   function showToast(msg) {
     setToast(msg);
@@ -132,7 +139,12 @@ export default function ComposePage({ onResult }) {
       <button className="submit" disabled={loading} onClick={handleSubmit} aria-label="替我写信" />
 
       {showLoading && (
-        <LoadingOverlay dataReady={dataReady} onComplete={handleLoadingComplete} />
+        <LoadingOverlay
+          dataReady={dataReady}
+          error={pendingData.current?.error || null}
+          onRetry={handleRetry}
+          onComplete={handleLoadingComplete}
+        />
       )}
 
       {toast && (
