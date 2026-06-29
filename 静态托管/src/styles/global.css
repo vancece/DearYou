@@ -11,7 +11,7 @@ body {
 .stage { width: 100%; max-width: 420px; animation: fadeIn .4s ease both; }
 
 /* 背景设计稿 + 叠加层容器 */
-.card { position: relative; width: 100%; line-height: 0; }
+.card { position: relative; width: 100%; line-height: 0; border-radius: 12px; overflow: hidden; }
 .card .bg { display: block; width: 100%; height: auto; }
 
 /* 透明叠加控件通用 */
