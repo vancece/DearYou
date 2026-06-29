@@ -1,0 +1,204 @@
+import React, { useState, useRef, useEffect, useCallback } from 'react';
+import { RELATIONS, STYLES, DEMO } from '../data.js';
+import { cloudbase } from '../cloudbase.js';
+import * as MUSIC from '../music.js';
+import LoadingOverlay from './LoadingOverlay.jsx';
+
+export default function ComposePage({ onResult }) {
+  const [to, setTo] = useState('');
+  const [relation, setRelation] = useState('');
+  const [words, setWords] = useState('');
+  const [style, setStyle] = useState('warm');
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
+
+  // 加载动画状态
+  const [showLoading, setShowLoading] = useState(false);
+  const [dataReady, setDataReady] = useState(false);
+  const pendingData = useRef(null);
+
+  // 结果区（保留在本页展示，后续可由 onResult 切换到独立页面）
+  const [letter, setLetter] = useState('');
+  const [mood, setMood] = useState('');
+  const [showResult, setShowResult] = useState(false);
+  const [musicUrl, setMusicUrl] = useState(undefined);
+  const [musicOn, setMusicOn] = useState(false);
+
+  const [toast, setToast] = useState('');
+
+  const relWrapRef = useRef(null);
+  const resultRef = useRef(null);
+  const typingTimer = useRef(null);
+
+  // 点击空白关闭下拉
+  useEffect(() => {
+    const onDoc = (e) => {
+      if (relWrapRef.current && !relWrapRef.current.contains(e.target)) setMenuOpen(false);
+    };
+    document.addEventListener('click', onDoc);
+    return () => document.removeEventListener('click', onDoc);
+  }, []);
+
+  useEffect(() => () => { if (typingTimer.current) clearTimeout(typingTimer.current); }, []);
+
+  function typeWriter(text, done) {
+    let i = 0;
+    setLetter('');
+    const tick = () => {
+      if (i < text.length) {
+        setLetter((prev) => prev + text[i]);
+        i++;
+        typingTimer.current = setTimeout(tick, 26);
+      } else if (done) done();
+    };
+    tick();
+  }
+
+  function startPlayer(styleKey, url) {
+    MUSIC.start(styleKey, url);
+    setMusicOn(MUSIC.isPlaying());
+  }
+
+  function togglePlayer() {
+    MUSIC.toggle(style, musicUrl);
+    setMusicOn(MUSIC.isPlaying());
+  }
+
+  // 加载动画完成回调：用 pending 数据展示结果
+  const handleLoadingComplete = useCallback(() => {
+    setShowLoading(false);
+    setShowResult(true);
+    setLoading(false);
+    setTimeout(() => resultRef.current?.scrollIntoView({ behavior: 'smooth' }), 50);
+
+    const data = pendingData.current;
+    if (data?.error) {
+      setLetter('信没能写成：' + data.error);
+      setMood('稍后再试一次吧。');
+    } else if (data) {
+      setMusicUrl(data.musicUrl);
+      typeWriter(data.letter, () => {
+        setMood('配乐情绪：' + (data.musicMood || data.mood));
+        startPlayer(style, data.musicUrl);
+      });
+    }
+  }, [style]);
+
+  function showToast(msg) {
+    setToast(msg);
+    setTimeout(() => setToast(''), 2500);
+  }
+
+  async function handleSubmit() {
+    if (!to.trim() && !relation && !words.trim()) {
+      showToast('请先填写信的内容');
+      return;
+    }
+    if (!to.trim()) { showToast('请填写阿嬤的称呼'); return; }
+    if (!relation) { showToast('请选择你们的关系'); return; }
+    if (!words.trim()) { showToast('请写下想对阿嬤说的话'); return; }
+
+    const payload = {
+      to: to.trim(),
+      relation,
+      words: words.trim(),
+      style,
+    };
+    MUSIC.stop();
+    setMusicOn(false);
+    setLoading(true);
+    setShowResult(false);
+    setLetter('');
+    setMood('正在为这封信谱一段背景音乐');
+    pendingData.current = null;
+    setDataReady(false);
+    setShowLoading(true);
+
+    try {
+      const res = await cloudbase.callFunction({
+        name: 'loveletter',
+        data: payload,
+      });
+      const result = res.result;
+      const data = typeof result.body === 'string' ? JSON.parse(result.body) : result;
+      if (!data.ok) throw new Error(data.error || '生成失败');
+      pendingData.current = data;
+      setDataReady(true);
+    } catch (e) {
+      pendingData.current = { error: e.message };
+      setDataReady(true);
+    }
+  }
+
+  return (
+    <div className="stage">
+      <div className="card">
+        <img className="bg" src="/assets/bg.jpg" alt="给阿嬤的情书" />
+
+        <input
+          className="ov ov-to"
+          type="text"
+          placeholder="阿嬤的称呼或名字"
+          value={to}
+          onChange={(e) => setTo(e.target.value)}
+        />
+
+        <div
+          className={'ov ov-rel' + (relation ? ' chosen' : '')}
+          ref={relWrapRef}
+          onClick={(e) => { e.stopPropagation(); setMenuOpen((v) => !v); }}
+        >
+          <span className="sel-text">{relation || '选择你们的关系'}</span>
+        </div>
+
+        {menuOpen && (
+          <div className="sel-menu" onClick={(e) => e.stopPropagation()}>
+            {RELATIONS.map((r) => (
+              <div
+                key={r}
+                className={'opt' + (relation === r ? ' on' : '')}
+                onClick={() => { setRelation(r); setMenuOpen(false); }}
+              >
+                {r.replace('/', ' / ')}
+              </div>
+            ))}
+          </div>
+        )}
+
+        <textarea
+          className="ov ov-words"
+          maxLength={500}
+          placeholder="你总在巷口等我放学，最爱给我做橄榄菜配白粥……"
+          value={words}
+          onChange={(e) => setWords(e.target.value)}
+        />
+        <div className="ov-count">{words.length}/500</div>
+
+        <div className="ov ov-styles">
+          {STYLES.map((s) => (
+            <div
+              key={s.key}
+              className={'hot' + (style === s.key ? ' active' : '')}
+              data-style={s.key}
+              onClick={() => setStyle(s.key)}
+            />
+          ))}
+        </div>
+      </div>
+
+      <button className="submit" disabled={loading} onClick={handleSubmit} aria-label="替我写信" />
+
+      {showLoading && (
+        <LoadingOverlay dataReady={dataReady} onComplete={handleLoadingComplete} />
+      )}
+
+      {toast && (
+        <div className="toast-mask">
+          <div className="toast">{toast}</div>
+        </div>
+      )}
+
+      {/* 结果区暂不展示，后续完善页面后再开启 */}
+    </div>
+  );
+}

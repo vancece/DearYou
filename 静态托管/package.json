@@ -1,0 +1,21 @@
+{
+  "name": "letters-for-grandma",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "description": "给阿嬤的情书 - 前端（React + Vite）。由 CodeBuddy 接入云开发自定义大模型 hy3-preview 开发。",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@cloudbase/js-sdk": "^3.6.1",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^4.3.4",
+    "vite": "^5.4.11"
+  }
+}
