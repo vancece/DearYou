@@ -10,7 +10,7 @@ export default function AboutPage() {
         <img className="bg" src="/assets/about-bg.jpg" alt="关于" />
         <button
           className="about-github-btn"
-          onClick={() => window.open('https://github.com/', '_blank')}
+          onClick={() => window.open('https://github.com/vancece/DearYou', '_blank')}
           aria-label="GitHub 源码"
         />
         <button
