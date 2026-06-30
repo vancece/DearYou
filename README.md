@@ -111,7 +111,6 @@ AI 会自动：
 
 ```bash
 VITE_CLOUDBASE_ENV_ID=你的云开发环境ID
-VITE_CLOUDBASE_REGION=ap-shanghai
 VITE_CLOUDBASE_ACCESS_KEY=你的Access Key（同时作为 AI API Key）
 ```
 
