@@ -1,5 +1,7 @@
 # 给阿嬤的情书
 
+🔗 **在线预览**：[https://newenv-4gnsku1ra42bb737-1308771514.tcloudbaseapp.com/](https://newenv-4gnsku1ra42bb737-1308771514.tcloudbaseapp.com/)
+
 一个用 AI 替你给最亲的人写信的小应用。灵感来自电影《给阿嬷的情书》——
 电影里谢南枝替人代笔写了一辈子，而这个应用，想做每个普通人的"谢南枝"。
 
