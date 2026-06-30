@@ -20,8 +20,9 @@ loveletter/
 
 | 变量 | 说明 | 获取位置 |
 |---|---|---|
-| `TCB_ENV` | 云开发环境 ID | 云开发控制台 |
-| `CLOUDBASE_AI_API_KEY` | AI 网关 API Key | [AI 控制台](https://tcb.cloud.tencent.com/dev#/ai?tab=text-aiModel) |
+| `TCB_ENV` | 云函数所在环境 ID | 云开发控制台（自动注入） |
+| `AI_ENV_ID` | AI 大模型所在环境 ID | `.env` 文件 |
+| `AI_API_KEY` | AI 网关 API Key | [AI 控制台](https://tcb.cloud.tencent.com/dev#/ai?tab=text-aiModel) |
 
 > Base URL 形如 `https://<ENV_ID>.api.tcloudbasegateway.com/v1/ai/cloudbase`，兼容 OpenAI 协议。
 > 使用前需在 [AI 控制台](https://tcb.cloud.tencent.com/dev#/ai?tab=text-aiModel) 中开启 `hy3-preview` 模型。

@@ -8,8 +8,8 @@ alwaysApply: false
 ## 前置条件
 
 1. 已在 IDE 集成面板中登录 CloudBase 并选择环境
-2. 根目录 `.env` 已配置 `VITE_CLOUDBASE_ENV_ID`、`VITE_CLOUDBASE_REGION`、`VITE_CLOUDBASE_ACCESS_KEY`（同时作为 AI API Key）
-3. 部署 `loveletter` 云函数时，需将 Access Key 设为环境变量 `CLOUDBASE_AI_API_KEY`
+2. 根目录 `.env` 已配置 `VITE_TCB_ENV_ID`、`VITE_TCB_ACCESS_KEY`（前端用）和 `AI_ENV_ID`、`AI_API_KEY`（云函数服务端用）
+3. 部署 `loveletter` 云函数时，需将 `AI_ENV_ID` 和 `AI_API_KEY` 设为环境变量
 
 ## 完整流程
 
@@ -27,7 +27,7 @@ alwaysApply: false
 
 | 函数名 | 超时 | 环境变量 | 说明 |
 |--------|------|----------|------|
-| loveletter | 60s | CLOUDBASE_AI_API_KEY | AI 生成信件 + 存数据库 |
+| loveletter | 60s | AI_ENV_ID, AI_API_KEY | AI 生成信件 + 存数据库 |
 | getletter | 10s | - | 按 ID 读取信件 |
 | listletters | 10s | - | 分页获取公开信件列表 |
 | countletters | 10s | - | 统计公开信件数量 |

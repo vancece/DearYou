@@ -107,14 +107,19 @@ AI 会自动：
 
 ## 配置说明
 
-根目录 `.env` 文件（前端和云函数共用）：
+根目录 `.env` 文件：
 
 ```bash
-VITE_CLOUDBASE_ENV_ID=你的云开发环境ID
-VITE_CLOUDBASE_ACCESS_KEY=你的Access Key（同时作为 AI API Key）
+# 前端 SDK（云函数 + 数据库，maralade 环境）
+VITE_TCB_ENV_ID=你的云开发环境ID
+VITE_TCB_ACCESS_KEY=你的 Publishable Key
+
+# AI 大模型（newenv 环境，云函数部署时设为环境变量）
+AI_ENV_ID=你的AI环境ID
+AI_API_KEY=你的 AI API Key
 ```
 
-> `VITE_` 前缀让 Vite 前端能读取，云函数本地调试也从同一个文件读。云端部署时通过环境变量 `CLOUDBASE_AI_API_KEY` 设置。
+> `VITE_TCB_*` 供前端 SDK 初始化（调云函数 / 数据库），`AI_*` 供云函数调用 AI 大模型（不带 `VITE_` 前缀，不会暴露到前端）。两组变量对应不同的云开发环境。
 
 ## 云开发模型 × CodeBuddy
 
@@ -137,7 +142,7 @@ npm run dev
 ## 部署
 
 1. 在 IDE 集成面板登录 CloudBase
-2. 部署 5 个云函数（`loveletter` 需设 `CLOUDBASE_AI_API_KEY` 环境变量，超时 60s）
+2. 部署 5 个云函数（`loveletter` 需设 `AI_ENV_ID` 和 `AI_API_KEY` 环境变量，超时 60s）
 3. 构建前端 `npm run build`
 4. 上传 `dist/` 到静态托管
 

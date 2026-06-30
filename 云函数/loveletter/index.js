@@ -17,9 +17,12 @@
 
 const cloudbase = require('@cloudbase/node-sdk');
 
+// 云函数 & 数据库所在环境
 const ENV_ID = process.env.TCB_ENV || process.env.SCF_NAMESPACE;
-const AI_BASE_URL = `https://${ENV_ID}.api.tcloudbasegateway.com/v1/ai/cloudbase`;
-const AI_API_KEY = process.env.CLOUDBASE_AI_API_KEY || process.env.VITE_CLOUDBASE_ACCESS_KEY;
+// AI 大模型所在环境（可以和云函数不在同一个环境）
+const AI_ENV_ID = process.env.AI_ENV_ID || ENV_ID;
+const AI_BASE_URL = `https://${AI_ENV_ID}.api.tcloudbasegateway.com/v1/ai/cloudbase`;
+const AI_API_KEY = process.env.AI_API_KEY;
 const MODEL = 'hy3-preview';
 
 const app = cloudbase.init({ env: ENV_ID });
