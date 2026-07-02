@@ -47,6 +47,14 @@ AI 会自动：
 - 投递到公共树洞，温暖更多人
 - 树洞广场：浏览所有公开的家书
 
+## 🖼️ 产品预览
+
+> 应用界面一览：
+
+![写信页](docs/assets/write-and-letter-content.png)
+
+![分享](docs/assets/share-report.png)
+
 ## 项目结构
 
 ```
@@ -149,6 +157,18 @@ npm run dev
 4. 上传 `dist/` 到静态托管
 
 > 💡 或者直接用 CodeBuddy 对 AI 说「请帮我部署这个项目」，一键完成以上所有步骤。
+
+## 架构与工程
+
+应用背后的 AI 工程闭环与云开发能力：
+
+![AI 应用工程闭环架构图](docs/assets/ai-app-architecture.png)
+
+![云开发 AI 网关双向接入图](docs/assets/cloudbase-ai-gateway.png)
+
+![支持多种 AI 工具](docs/assets/support-ai-tool.png)
+
+![CodeBuddy 一条指令部署流程图](docs/assets/codebuddy-deploy-flow.png)
 
 ## 📖 技术文章
 
